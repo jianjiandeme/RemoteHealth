@@ -21,13 +21,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         fragment = findViewById(R.id.fragment);
         houtai =  findViewById(R.id.houtai);
+        startService(new Intent(this,MyService.class));
         fragment.setOnClickListener((v)->{
             startActivity(new Intent(this,InformationActivity.class));
         });
         houtai.setOnClickListener((v)->{
             startActivity(new Intent(this,InformationActivity.class));
         });
-        startService(new Intent(this,MyService.class));
     }
 
 

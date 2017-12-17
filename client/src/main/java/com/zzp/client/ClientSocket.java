@@ -79,6 +79,10 @@ public class ClientSocket {
         }
         output.println("this is the message from client");
     }
+
+
+
+
     public byte[] receiveData() {
         if (socket == null || socket.isClosed()) {
             try {
@@ -105,11 +109,11 @@ public class ClientSocket {
     }
     public  void sendMessage() {
         String data = new ZZPRandom("normal").getRandomData();
-        output.println("Patient"+data);
+        output.println("Patient,"+data);
     }
     public void sendErrorMessage() {
         String data = new ZZPRandom("Error").getRandomData();
-        output.println("Patient"+data);
+        output.println("Patient,"+data);
     }
 
     public void closeSocket() {

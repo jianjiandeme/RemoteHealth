@@ -26,7 +26,7 @@ public class PatientFragment extends Fragment {
     int rank;
     public static final String ARGS_PAGE = "args_page";
     //更新信息
-    Timer mTimer ;
+    Timer mTimer = new Timer();
     TimerTask mTimerTask;
     TextView number,bloodPressure,respiration,temperature;
     Patient patient ;
@@ -44,11 +44,38 @@ public class PatientFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater,container,savedInstanceState);
         rank = getArguments().getInt(ARGS_PAGE);
         mView  = inflater.inflate(R.layout.fragment_patient,container,false);
-        initView(mView);
         patient = Constants.patients.get(rank);
         return mView;
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        initView(mView);
+
+
+        mTimerTask = new TimerTask() {
+            @Override
+            public void run() {
+                number.post(
+                        ()->number.setText( String.valueOf(patient.number)));
+
+                bloodPressure.post(
+                        ()->bloodPressure.setText( String.valueOf(patient.bloodPressure)));
+
+                respiration.post(
+                        ()->respiration.setText( String.valueOf(patient.respiration)));
+
+                temperature.post(
+                        ()->temperature.setText( String.valueOf(patient.temperature)));
+
+            }};
+        mTimer.schedule(mTimerTask,0,1000);
+
     }
 
     @Override
@@ -62,16 +89,6 @@ public class PatientFragment extends Fragment {
         bloodPressure = view.findViewById(R.id.bloodPressure);
         respiration = view.findViewById(R.id.respiration);
         temperature = view.findViewById(R.id.temperature);
-
-        mTimerTask = new TimerTask() {
-            @Override
-            public void run() {
-            number.setText( patient.number);
-            bloodPressure.setText( patient.bloodPressure);
-            respiration.setText( patient.respiration);
-            temperature.setText( String.valueOf( patient.temperature));
-            }};
-        mTimer.schedule(mTimerTask,0,1000);
     }
 
 }

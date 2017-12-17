@@ -9,6 +9,8 @@ import java.net.Socket;
 
 import Patient.Patient;
 
+import static utils.Constants.patients;
+
 /**
  * Created by zzp on 2017/11/25.
  */
@@ -45,6 +47,7 @@ public class ServerThread implements Runnable {
                     if(patient == null){
                         patient = new Patient(Integer.parseInt(data[1]),
                                 Integer.parseInt(data[2]),Float.parseFloat(data[3]));
+                        patients.add(patient);
                     }
                     else
                     {
