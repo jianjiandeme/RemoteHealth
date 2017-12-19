@@ -1,5 +1,6 @@
 package com.zzp.remotehealth;
 
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
@@ -33,7 +34,8 @@ public class MyService extends Service {
                     while(true){
                         client = server.accept();
                         //获取参数
-                        new Thread(new ServerThread(client,getApplicationContext())).start();
+
+                        new Thread(new ServerThread(client,getApplicationContext(),(NotificationManager)getSystemService(NOTIFICATION_SERVICE))).start();
                     }
                 }catch (Exception e){
                     e.printStackTrace();

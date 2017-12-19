@@ -109,21 +109,18 @@ public class ClientSocket {
     }
     public  void sendMessage() {
         String data = new ZZPRandom("normal").getRandomData();
-        output.println("Patient,"+data);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                output.println("Patient,"+data);
+            }
+        }).start();
     }
     public void sendErrorMessage() {
         String data = new ZZPRandom("Error").getRandomData();
-        output.println("Patient,"+data);
+        new Thread(()->output.println("Patient,"+data)).start();
     }
 
-    public void closeSocket() {
-        try {
-            output.close();
-            socket.close();
-        } catch (IOException e) {
-            System.out.println("error"+e);
-        }
-    }
 
 
 

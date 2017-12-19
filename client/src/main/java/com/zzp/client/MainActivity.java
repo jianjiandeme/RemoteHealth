@@ -40,7 +40,9 @@ public class MainActivity extends AppCompatActivity {
 
         sendBtn.setOnClickListener((v)->{
              //开启线程
-            clientSocket = new ClientSocket(text,getApplicationContext());
+            if(clientSocket == null) {
+                clientSocket = new ClientSocket(text, getApplicationContext());
+            }
             });
         sendMessageBtn.setOnClickListener((v)->{
             clientSocket.sendMessage();

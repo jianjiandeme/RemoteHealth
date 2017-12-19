@@ -6,10 +6,13 @@ package Patient;
 
 public class Patient {
     public String number = String.valueOf(i);
-    private static long i = 10000000;
+    private static long i = 100000000;
     public int bloodPressure ;
     public int respiration ;
     public float temperature;
+
+    public int bloodPressureUp=1000,bloodPressureDown=0,respirationUp=1000,respirationDown=0;
+    public float temperatureDown=0f,temperatureUp=42f;
 
     public Patient( int bloodPressure, int respiration, float temperature) {
         this.bloodPressure = bloodPressure;
