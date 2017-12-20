@@ -2,6 +2,15 @@ package com.zzp.client;
 
 import java.util.Random;
 
+import Patient.Patient;
+
+import static Patient.Patient.bloodPressureDown;
+import static Patient.Patient.bloodPressureUp;
+import static Patient.Patient.respirationDown;
+import static Patient.Patient.respirationUp;
+import static Patient.Patient.temperatureDown;
+import static Patient.Patient.temperatureUp;
+
 /**
  * Created by zzp on 2017/11/25.
  */
@@ -15,18 +24,38 @@ public class ZZPRandom {
     public String getRandomData(){
         Random random = new Random();
         String result;
-        int[] data = new int[3];
+        int bloodPressure,respiration;
+        float temperature;
+
+
         if("normal".equals(flag)) {
-            data[0] = random.nextInt(120) % 40 + 80;
-            data[1] = random.nextInt(20) % 4 + 16;
-            data[2] = random.nextInt(372) % 10 + 363;
-            result = data[0]+","+data[1]+","+((float)data[2])/10f+",";
+            bloodPressure = random.nextInt(bloodPressureUp) %
+                    (bloodPressureUp-bloodPressureDown) +bloodPressureUp;
+            respiration = random.nextInt(respirationUp) %
+                    (respirationUp-respirationDown) +respirationDown;
+            temperature = random.nextFloat()*
+                    (temperatureUp - temperatureDown)
+                     + temperatureDown;
+            result = bloodPressure+","+respiration+","+temperature+",";
             return result;
         }
-        data[0] = random.nextInt(120) % 40 + 90;
-        data[1] = random.nextInt(20) % 4 + 18;
-        data[2] = random.nextInt(372) % 50 + 363;
-        result = data[0]+","+data[1]+","+((float)data[2])/10f+",";
+
+        if(random.nextBoolean())
+            bloodPressure = bloodPressureDown - 10;
+        else
+            bloodPressure = bloodPressureUp - 10;
+
+
+        if(random.nextBoolean())
+            respiration = respirationDown - 10;
+        else
+            respiration = respirationUp - 10;
+
+        if(random.nextBoolean())
+            temperature = temperatureDown - 2;
+        else temperature = temperatureUp + 2;
+
+        result = bloodPressure+","+respiration+","+temperature+",";
         return result;
     }
 }

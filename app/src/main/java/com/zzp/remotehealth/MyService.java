@@ -34,7 +34,6 @@ public class MyService extends Service {
                     while(true){
                         client = server.accept();
                         //获取参数
-
                         new Thread(new ServerThread(client,getApplicationContext(),(NotificationManager)getSystemService(NOTIFICATION_SERVICE))).start();
                     }
                 }catch (Exception e){

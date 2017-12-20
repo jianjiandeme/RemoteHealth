@@ -25,7 +25,7 @@ public class ServerThread implements Runnable {
     private String number;
     NotificationManager manager;
 
-    public ServerThread(Socket client,Context context,NotificationManager manager) {
+    ServerThread(Socket client,Context context,NotificationManager manager) {
         this.client = client;
         this.context = context;
         this.manager = manager;
@@ -62,6 +62,14 @@ public class ServerThread implements Runnable {
                     }
                     boolean isError = false;
                     StringBuilder sb = new StringBuilder();
+                    sb.append(patient.bloodPressureDown).append(",").
+                            append(patient.bloodPressureUp).append(",").
+                            append(patient.respirationDown).append(",").
+                            append(patient.respirationUp).append(",").
+                            append(patient.temperatureDown).append(",").
+                            append(patient.temperatureUp).append(",") .
+                            append(patient.number).append(" ");
+
                     if(patient.bloodPressure<patient.bloodPressureDown) {
                         sb.append("血压过低,");
                         isError = true;
@@ -80,27 +88,23 @@ public class ServerThread implements Runnable {
                         isError = true;
                     }
                     if(patient.temperature<patient.temperatureDown){
-                        sb.append("体温过低");
+                        sb.append("体温过低,");
                         isError = true;
                     }
                     if(patient.temperature>patient.temperatureUp){
-                        sb.append("体温过高");
+                        sb.append("体温过高,");
                         isError = true;
                     }
                     if(isError){
-                        NotificationCompat.Builder builder = new NotificationCompat.Builder(context,null)
+                        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                                 //设置小图标
                                 .setSmallIcon(R.mipmap.ic_launcher)
                                 //设置通知标题
-                                .setContentTitle("最简单的Notification")
+                                .setContentTitle(patient.number)
                                 //设置通知内容
-                                .setContentText("只有小图标、标题、内容");
-//                        Notification notification = new Notification();
-//                        notification.tickerText = sb.toString();
-//                        notification.icon = R.mipmap.ic_launcher;
-//                        notification.when = System.currentTimeMillis();
-//                        notification.flags = Notification.FLAG_AUTO_CANCEL;
-//                        manager.notify(1,notification);
+                                .setContentText(sb.toString())
+                                .setVibrate(new long[]{0,1000,1000,1000});
+                        manager.notify(1,builder.build());
                     }
                     out.println(sb);
                     }

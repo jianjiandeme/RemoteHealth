@@ -1,10 +1,9 @@
 package com.zzp.client;
 
+import android.app.NotificationManager;
 import android.content.Context;
-import android.net.DhcpInfo;
-import android.net.wifi.WifiManager;
+import android.support.v4.app.NotificationCompat;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -12,57 +11,39 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import Patient.Patient;
+
 /**
  * Created by zzp on 2017/11/22.
  */
 
 public class ClientSocket {
 
-
     private Socket socket;
     private PrintStream output;
-    TextView text ;
-    StringBuffer getString = new StringBuffer();
-    String hostIp;
-    Context context ;
-    //是否从服务端得到信息
-    boolean isGetInformation = false;
+    private TextView text ;
+    private StringBuffer getString = new StringBuffer();
+    private String hostIp;
+    private Context context ;
+    private NotificationManager manager;
 
-    public ClientSocket(TextView text,Context context) {
+     ClientSocket(TextView text,Context context,String hostIp,NotificationManager manager) {
         this.text = text ;
         this.context = context ;
-        new Thread(runnable).start();
-    }
-
-    Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            // TODO Auto-generated method stub
+        this.hostIp = hostIp;
+        this.manager = manager;
+        new Thread(()->{
             initClientSocket();
             ReadThread readThread = new ReadThread();
             readThread.start();
-        }
-    };
+        }).start();
+    }
 
 
-    public void initClientSocket() {
 
-        //获得wifi IP地址
-        //获取WifiManager
-        WifiManager wifiManager=(WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-        if(!wifiManager.isWifiEnabled())  {
-            Toast.makeText( context, "请连接服务器WiFi",
-                    Toast.LENGTH_SHORT).show();
-        }else{
-            DhcpInfo dhcpInfo = wifiManager.getDhcpInfo();
-            int i = dhcpInfo.serverAddress;
-            //将获取的int转为真正的ip地址
-            hostIp = (i & 0xFF) + "." + ((i >> 8) & 0xFF) + "." + ((i >> 16) & 0xFF)
-                    + "." + (i >> 24 & 0xFF);
-        }
-        text.post(()->
-                text.setText("服务器IP为:"+ hostIp)
-        );
+
+    private void initClientSocket() {
+
 
         try {
             socket = new Socket(hostIp, 5000);
@@ -83,7 +64,7 @@ public class ClientSocket {
 
 
 
-    public byte[] receiveData() {
+    private byte[] receiveData() {
         if (socket == null || socket.isClosed()) {
             try {
                 socket = new Socket(hostIp, 5000);
@@ -107,16 +88,12 @@ public class ClientSocket {
         }
         return data;
     }
-    public  void sendMessage() {
+      void sendMessage() {
         String data = new ZZPRandom("normal").getRandomData();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                output.println("Patient,"+data);
-            }
-        }).start();
+        new Thread(()->output.println("Patient,"+data)).start();
     }
-    public void sendErrorMessage() {
+
+     void sendErrorMessage() {
         String data = new ZZPRandom("Error").getRandomData();
         new Thread(()->output.println("Patient,"+data)).start();
     }
@@ -127,21 +104,51 @@ public class ClientSocket {
     private class ReadThread extends Thread{
         @Override
         public void run() {
-            // TODO Auto-generated method stub
             super.run();
             while (true) {
                 byte[] data = receiveData();
                 if (data.length > 1) {
+                    String str = new String(data);
+                    String[] limits ;
+                    String errors;
+                    if(str.contains("过")){
+                        String[] two = str.split(" ");
+                        limits = two[0].split(",");
+                        errors = two[1];
+                        sendNotification(errors);
+                    }else {
+                        limits = str.split(",");
+                    }
+
+                    Patient.bloodPressureDown = Integer.parseInt(limits[0]);
+                    Patient.bloodPressureUp = Integer.parseInt(limits[1]);
+                    Patient.respirationDown = Integer.parseInt(limits[2]);
+                    Patient.respirationUp = Integer.parseInt(limits[3]);
+                    Patient.temperatureDown = Float.parseFloat(limits[4]);
+                    Patient.temperatureUp = Float.parseFloat(limits[5]);
+                    Patient.number = limits[6];
                     print(new String(data));
                 }
             }
         }
 
         private void print(String str) {
-            getString.append(str+"\n");
+            getString.append(str).append("\n");
             text.post(() ->
                     text.setText(getString)
             );
         }
+    }
+
+    private void sendNotification(String errors) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+                //设置小图标
+                .setSmallIcon(R.mipmap.ic_launcher)
+                //设置通知标题
+                .setContentTitle(Patient.number)
+                //设置通知内容
+                .setContentText(errors)
+                .setVibrate(new long[]{0,1000,1000,1000});
+        manager.notify(1,builder.build());
     }
 }

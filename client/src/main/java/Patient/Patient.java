@@ -5,16 +5,11 @@ package Patient;
  */
 
 public class Patient {
-    public String number ;
-    public int bloodPressure ;
-    public int respiration ;
-    public float temperature;
-
-    public Patient(String number, int bloodPressure, int respiration, float temperature) {
-        this.number = number;
-        this.bloodPressure = bloodPressure;
-        this.respiration = respiration;
-        this.temperature = temperature;
-    }
-
+    public static String number ;
+    public static int bloodPressureUp=1000,
+            bloodPressureDown=0,
+            respirationUp=1000,
+            respirationDown=0;
+    public static float temperatureDown=0f,
+            temperatureUp=42f;
 }
