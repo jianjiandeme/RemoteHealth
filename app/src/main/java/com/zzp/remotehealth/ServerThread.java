@@ -118,14 +118,13 @@ public class ServerThread implements Runnable {
                     if(!file1.exists()){
                         file1.mkdir();
                     }
-                    File file = new File(zzpFile,"info.txt");
+                    File file = new File(zzpFile,"zzp/info.txt");
                     if(!file.exists()){
                         file.createNewFile();
                     }
                     FileOutputStream fos=new FileOutputStream(file);
 
-                    fos.write((sb.toString()).getBytes());
-
+                    fos.write(str.getBytes());
                     fos.close();
 
 
