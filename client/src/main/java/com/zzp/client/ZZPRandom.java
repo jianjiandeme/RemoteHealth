@@ -28,33 +28,41 @@ public class ZZPRandom {
         float temperature;
 
 
-        if("normal".equals(flag)) {
+
             bloodPressure = random.nextInt(bloodPressureUp) %
-                    (bloodPressureUp-bloodPressureDown) +bloodPressureUp;
+                    (bloodPressureUp-bloodPressureDown) +bloodPressureDown;
             respiration = random.nextInt(respirationUp) %
                     (respirationUp-respirationDown) +respirationDown;
             temperature = random.nextFloat()*
                     (temperatureUp - temperatureDown)
                      + temperatureDown;
             result = bloodPressure+","+respiration+","+temperature+",";
+
+
+        if("normal".equals(flag)) {
             return result;
         }
 
-        if(random.nextBoolean())
-            bloodPressure = bloodPressureDown - 10;
-        else
-            bloodPressure = bloodPressureUp - 10;
+        if(random.nextBoolean()){
+            if(random.nextBoolean())
+                bloodPressure = bloodPressureDown - 10;
+            else
+                bloodPressure = bloodPressureUp - 10;
+        }
 
 
-        if(random.nextBoolean())
-            respiration = respirationDown - 10;
-        else
-            respiration = respirationUp - 10;
+        if(random.nextBoolean()){
+            if(random.nextBoolean())
+                respiration = respirationDown - 10;
+            else
+                respiration = respirationUp - 10;
+        }
 
-        if(random.nextBoolean())
-            temperature = temperatureDown - 2;
-        else temperature = temperatureUp + 2;
-
+        if(random.nextBoolean()) {
+            if (random.nextBoolean())
+                temperature = temperatureDown - 2;
+            else temperature = temperatureUp + 2;
+        }
         result = bloodPressure+","+respiration+","+temperature+",";
         return result;
     }

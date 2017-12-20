@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         if(!wifiManager.isWifiEnabled())  {
             Toast.makeText( this, "请连接服务器WiFi,并重启应用",
                     Toast.LENGTH_SHORT).show();
+            finish();
             hostIp = "0.0.0.0";
         }else{
             DhcpInfo dhcpInfo = wifiManager.getDhcpInfo();
@@ -64,4 +65,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(clientSocket.timer != null){
+            clientSocket.timer.cancel();
+        }
+    }
 }

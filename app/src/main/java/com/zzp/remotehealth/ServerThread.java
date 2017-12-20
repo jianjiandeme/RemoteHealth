@@ -3,9 +3,12 @@ package com.zzp.remotehealth;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
@@ -23,7 +26,8 @@ public class ServerThread implements Runnable {
     private Context context;
     private Patient patient;
     private String number;
-    NotificationManager manager;
+    private NotificationManager manager;
+    private int notifyTime = 1;
 
     ServerThread(Socket client,Context context,NotificationManager manager) {
         this.client = client;
@@ -61,14 +65,16 @@ public class ServerThread implements Runnable {
                         patient.temperature = Float.parseFloat(data[3]);
                     }
                     boolean isError = false;
+                    StringBuilder parameter = new StringBuilder();
                     StringBuilder sb = new StringBuilder();
-                    sb.append(patient.bloodPressureDown).append(",").
+                    parameter.append(patient.bloodPressureDown).append(",").
                             append(patient.bloodPressureUp).append(",").
                             append(patient.respirationDown).append(",").
                             append(patient.respirationUp).append(",").
                             append(patient.temperatureDown).append(",").
-                            append(patient.temperatureUp).append(",") .
-                            append(patient.number).append(" ");
+                            append(patient.temperatureUp).append(",").
+                            append(patient.number).append(",").
+                            append(patient.frequence).append(" ");
 
                     if(patient.bloodPressure<patient.bloodPressureDown) {
                         sb.append("血压过低,");
@@ -103,10 +109,27 @@ public class ServerThread implements Runnable {
                                 .setContentTitle(patient.number)
                                 //设置通知内容
                                 .setContentText(sb.toString())
-                                .setVibrate(new long[]{0,1000,1000,1000});
-                        manager.notify(1,builder.build());
+                                .setVibrate(new long[]{0,100,100,100});
+                        manager.notify(notifyTime++ ,builder.build());
                     }
-                    out.println(sb);
+
+                    String zzpFile = Environment.getExternalStorageDirectory().toString();
+                    File file1=new File(Environment.getExternalStorageDirectory(),"zzp");
+                    if(!file1.exists()){
+                        file1.mkdir();
+                    }
+                    File file = new File(zzpFile,"info.txt");
+                    if(!file.exists()){
+                        file.createNewFile();
+                    }
+                    FileOutputStream fos=new FileOutputStream(file);
+
+                    fos.write((sb.toString()).getBytes());
+
+                    fos.close();
+
+
+                    out.println(parameter.append(sb));
                     }
             }
             out.close();

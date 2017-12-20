@@ -16,6 +16,8 @@ import com.zzp.remotehealth.R;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import Patient.Patient;
 import utils.Constants;
@@ -32,7 +34,7 @@ public class PatientFragment extends Fragment {
     //更新信息
     Timer mTimer = new Timer();
     TimerTask mTimerTask;
-    TextView number,bloodPressure,respiration,temperature;
+    TextView number,bloodPressure,respiration,temperature,frequent;
     Patient patient ;
     Button set ;
 
@@ -76,6 +78,8 @@ public class PatientFragment extends Fragment {
                 temperature.post(
                         ()->temperature.setText( String.valueOf(patient.temperature)));
 
+                frequent.post(
+                        ()->frequent.setText( String.valueOf(patient.frequence)));
             }};
         mTimer.schedule(mTimerTask,0,1000);
 
@@ -92,6 +96,7 @@ public class PatientFragment extends Fragment {
         set = view.findViewById(R.id.set);
         set.setOnClickListener((view1)->showDialog());
 //        number.setOnClickListener((view1)-> showDialog());
+        frequent = view.findViewById(R.id.frequent);
         bloodPressure = view.findViewById(R.id.bloodPressure);
         respiration = view.findViewById(R.id.respiration);
         temperature = view.findViewById(R.id.temperature);
@@ -105,6 +110,7 @@ public class PatientFragment extends Fragment {
         View dialogView = LayoutInflater.from(getContext())
                 .inflate(R.layout.edit,null);
         EditText numberEdit,
+                freEdit,
                 bloodPressureDown ,
                 bloodPressureUp   ,
                 respirationDown   ,
@@ -117,12 +123,14 @@ public class PatientFragment extends Fragment {
         numberEdit = dialogView.findViewById(R.id.numberEdit);
         numberEdit.setText(patient.number);
 
+        freEdit = dialogView.findViewById(R.id.freEdit);
             bloodPressureDown = dialogView.findViewById(R.id.bloodPressureDown);
             bloodPressureUp = dialogView.findViewById(R.id.bloodPressureUp);
             respirationDown = dialogView.findViewById(R.id.respirationDown);
             respirationUp = dialogView.findViewById(R.id.respirationUp);
             temperatureDown = dialogView.findViewById(R.id.temperatureDown);
             temperatureUp = dialogView.findViewById(R.id.temperatureUp);
+            freEdit.setText(String.valueOf(patient.frequence));
             bloodPressureDown.setText(String.valueOf(patient.bloodPressureDown));
             bloodPressureUp.setText(String.valueOf(patient.bloodPressureUp));
             respirationDown.setText(String.valueOf(patient.respirationDown));
@@ -132,8 +140,21 @@ public class PatientFragment extends Fragment {
 
         enter.setOnClickListener((view1)-> {
             try {
-            if(!"".equals(numberEdit.getText().toString()))
-                patient.number = numberEdit.getText().toString();
+                String str= numberEdit.getText().toString();
+            if("".equals(str)){
+                Toast.makeText(getContext(),"请输入病历号",Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Pattern pattern = Pattern.compile("^[0-9]{9}$");
+                Matcher isNum = pattern.matcher(str);
+                if (!isNum.matches()) {
+                    Toast.makeText(getContext(),"输入有误",Toast.LENGTH_SHORT).show();
+                }else {
+                    patient.number = numberEdit.getText().toString();
+                }
+            }
+            if(!"".equals(freEdit.getText().toString()))
+                    patient.frequence = Integer.parseInt(freEdit.getText().toString());
             if(!"".equals(bloodPressureDown.getText().toString()))
                 patient.bloodPressureDown = Integer.parseInt(bloodPressureDown.getText().toString());
             if(!"".equals(bloodPressureUp.getText().toString()))
@@ -148,14 +169,12 @@ public class PatientFragment extends Fragment {
                 patient.temperatureUp = Float.parseFloat(temperatureUp.getText().toString());
             }catch (Exception e){
                 Toast.makeText(getContext(),"输入有误",Toast.LENGTH_SHORT).show();
-            }
+            }finally {
                 dialog.dismiss();
+            }
         });
-
         cancel.setOnClickListener((view1)-> dialog.dismiss());
-
         dialog.setContentView(dialogView);
         dialog.show();
-
     }
 }

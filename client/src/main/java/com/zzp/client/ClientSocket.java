@@ -6,10 +6,14 @@ import android.support.v4.app.NotificationCompat;
 import android.widget.TextView;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import Patient.Patient;
 
@@ -17,8 +21,7 @@ import Patient.Patient;
  * Created by zzp on 2017/11/22.
  */
 
-public class ClientSocket {
-
+ class ClientSocket {
     private Socket socket;
     private PrintStream output;
     private TextView text ;
@@ -26,6 +29,8 @@ public class ClientSocket {
     private String hostIp;
     private Context context ;
     private NotificationManager manager;
+    public Timer timer = new Timer();
+    private int notiTime = 1;
 
      ClientSocket(TextView text,Context context,String hostIp,NotificationManager manager) {
         this.text = text ;
@@ -40,11 +45,7 @@ public class ClientSocket {
     }
 
 
-
-
     private void initClientSocket() {
-
-
         try {
             socket = new Socket(hostIp, 5000);
             output = new PrintStream(socket.getOutputStream(), true, "gbk");
@@ -58,13 +59,19 @@ public class ClientSocket {
             System.out.println("服务器未开启");
             e.printStackTrace();
         }
-        output.println("this is the message from client");
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                sendMessage();
+            }
+        }, 0, Patient.frequent * 1000);
+
     }
 
 
 
 
-    private byte[] receiveData() {
+    private String receiveData() {
         if (socket == null || socket.isClosed()) {
             try {
                 socket = new Socket(hostIp, 5000);
@@ -72,21 +79,18 @@ public class ClientSocket {
                 e.printStackTrace();
             }
         }
-        byte[] data = null;
-        BufferedInputStream bufferedInputStream;
-
+        BufferedReader buf ;
+        String str;
         if (socket.isConnected()) {
             try {
-                bufferedInputStream = new BufferedInputStream(socket.getInputStream());
-                data = new byte[bufferedInputStream.available()];
-                bufferedInputStream.read(data);
+                buf = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                str= buf.readLine();
+                return str;
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else {
-            data = new byte[1];
         }
-        return data;
+            return null;
     }
       void sendMessage() {
         String data = new ZZPRandom("normal").getRandomData();
@@ -106,9 +110,8 @@ public class ClientSocket {
         public void run() {
             super.run();
             while (true) {
-                byte[] data = receiveData();
-                if (data.length > 1) {
-                    String str = new String(data);
+                String str = receiveData();
+                if (str.length() > 1) {
                     String[] limits ;
                     String errors;
                     if(str.contains("过")){
@@ -127,7 +130,17 @@ public class ClientSocket {
                     Patient.temperatureDown = Float.parseFloat(limits[4]);
                     Patient.temperatureUp = Float.parseFloat(limits[5]);
                     Patient.number = limits[6];
-                    print(new String(data));
+                    int tempFrequent =  Integer.parseInt(limits[7].trim());
+                    if(tempFrequent !=Patient.frequent ){
+                        Patient.frequent = tempFrequent;
+                        timer.schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                sendMessage();
+                            }
+                        }, Patient.frequent * 1000, Patient.frequent * 1000);
+                    }
+                    print(str);
                 }
             }
         }
@@ -148,7 +161,7 @@ public class ClientSocket {
                 .setContentTitle(Patient.number)
                 //设置通知内容
                 .setContentText(errors)
-                .setVibrate(new long[]{0,1000,1000,1000});
-        manager.notify(1,builder.build());
+                .setVibrate(new long[]{0,100,100,100});
+        manager.notify( notiTime++ , builder.build() );
     }
 }

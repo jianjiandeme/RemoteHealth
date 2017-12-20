@@ -6,10 +6,13 @@ package Patient;
 
 public class Patient {
     public static String number ;
-    public static int bloodPressureUp=1000,
-            bloodPressureDown=0,
-            respirationUp=1000,
-            respirationDown=0;
-    public static float temperatureDown=0f,
-            temperatureUp=42f;
+    public static int
+            frequent = 5,
+            bloodPressureUp=120,
+            bloodPressureDown=80,
+            respirationUp=20,
+            respirationDown=16;
+    public static float temperatureDown=35f,
+            temperatureUp=40f;
+
 }

@@ -7,12 +7,17 @@ package Patient;
 public class Patient {
     public String number = String.valueOf(i);
     private static long i = 100000000;
+    public int frequence = 5;
     public int bloodPressure ;
     public int respiration ;
     public float temperature;
+    public int bloodPressureUp=120,
+            bloodPressureDown=80,
+            respirationUp=20,
+            respirationDown=16;
+    public float temperatureDown=35f,
+            temperatureUp=40f;
 
-    public int bloodPressureUp=1000,bloodPressureDown=0,respirationUp=1000,respirationDown=0;
-    public float temperatureDown=0f,temperatureUp=42f;
 
     public Patient( int bloodPressure, int respiration, float temperature) {
         this.bloodPressure = bloodPressure;

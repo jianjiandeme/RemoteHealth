@@ -19,7 +19,7 @@ import static utils.Constants.patients;
 public class InformationActivity extends AppCompatActivity {
 
     ViewPager viewPager;
-    private Handler handler = new Handler();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public class InformationActivity extends AppCompatActivity {
         private TabAdapter(FragmentManager fm) {
             super(fm);
             for(int i=0;i< patients.size();i++){
-                titles[i] = patients.get(i).number;
+                titles[i] = String.valueOf(i+1);
                 fragmentList.add(new PatientFragment().newInstance(i));
             }
 
