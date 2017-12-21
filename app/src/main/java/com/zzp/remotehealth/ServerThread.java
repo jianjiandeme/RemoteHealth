@@ -9,6 +9,7 @@ import android.support.v4.app.NotificationCompat;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
@@ -30,6 +31,7 @@ public class ServerThread implements Runnable {
     private String number;
     private NotificationManager manager;
     private int notifyTime = 1;
+    private String zzpFile = Environment.getExternalStorageDirectory().toString() + "/zzp";
 
     ServerThread(Socket client,Context context,NotificationManager manager) {
         this.client = client;
@@ -115,29 +117,30 @@ public class ServerThread implements Runnable {
                         manager.notify(notifyTime++ ,builder.build());
                     }
 
-                    String zzpFile = Environment.getExternalStorageDirectory().toString() + "/zzp";
-                    File file1=new File(zzpFile);
-                    if(!file1.exists()){
-                        file1.mkdir();
-                    }
+
+                    FileWriter writer ;
+
+                    StringBuilder txtString = new StringBuilder();
                     File file = new File(zzpFile,patient.number+".txt");
                     if(!file.exists()){
                         file.createNewFile();
+                        writer = new FileWriter(file,true);
+                        writer.write(patient.number+"/n  \t\t时间\t\t\t\t\t\t血压\t\t\t\t呼吸\t\t\t\t体温\n");
+                        writer.close();
                     }
-                    FileOutputStream fos=new FileOutputStream(file);
 
-                    StringBuilder txtString = new StringBuilder(patient.number).append("\t");
-
+                    writer = new FileWriter(file,true);
                     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
                     txtString.append(df.format(new Date())).append("\t").
-                    append("血压").append("\t").append(patient.bloodPressure).append("\t").
-                    append("呼吸").append("\t").append(patient.respiration).append("\t").
-                    append("体温").append("\t").append(patient.temperature).append("\n");
-                    fos.write(txtString.toString().getBytes());
-                    fos.close();
+                            append("\t").append(patient.bloodPressure).append("\t").
+                            append("\t").append(patient.respiration).append("\t").
+                            append("\t").append(patient.temperature).append("\n");
+                    writer.write(txtString.toString()+sb);
+                    writer.close();
                     out.println(parameter.append(sb));
                     }
             }
+
             out.close();
             buf.close();
         } catch (Exception e) {

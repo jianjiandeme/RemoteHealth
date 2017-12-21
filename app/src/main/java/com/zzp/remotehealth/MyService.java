@@ -3,8 +3,10 @@ package com.zzp.remotehealth;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
+import android.os.Environment;
 import android.os.IBinder;
 
+import java.io.File;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -29,6 +31,12 @@ public class MyService extends Service {
             @Override
             public void run() {
                 try {
+
+                    String zzpFile = Environment.getExternalStorageDirectory().toString() + "/zzp";
+                    File file1=new File(zzpFile);
+                    if(!file1.exists()){
+                        file1.mkdir();
+                    }
                     ServerSocket server = new ServerSocket(5000);
                     Socket client ;
                     while(true){
