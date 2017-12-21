@@ -12,6 +12,8 @@ import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import Patient.Patient;
 
@@ -113,21 +115,26 @@ public class ServerThread implements Runnable {
                         manager.notify(notifyTime++ ,builder.build());
                     }
 
-                    String zzpFile = Environment.getExternalStorageDirectory().toString();
-                    File file1=new File(Environment.getExternalStorageDirectory(),"zzp");
+                    String zzpFile = Environment.getExternalStorageDirectory().toString() + "/zzp";
+                    File file1=new File(zzpFile);
                     if(!file1.exists()){
                         file1.mkdir();
                     }
-                    File file = new File(zzpFile,"zzp/info.txt");
+                    File file = new File(zzpFile,patient.number+".txt");
                     if(!file.exists()){
                         file.createNewFile();
                     }
                     FileOutputStream fos=new FileOutputStream(file);
 
-                    fos.write(str.getBytes());
+                    StringBuilder txtString = new StringBuilder(patient.number).append("\t");
+
+                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+                    txtString.append(df.format(new Date())).append("\t").
+                    append("血压").append("\t").append(patient.bloodPressure).append("\t").
+                    append("呼吸").append("\t").append(patient.respiration).append("\t").
+                    append("体温").append("\t").append(patient.temperature).append("\n");
+                    fos.write(txtString.toString().getBytes());
                     fos.close();
-
-
                     out.println(parameter.append(sb));
                     }
             }
