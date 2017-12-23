@@ -123,16 +123,16 @@ public class ServerThread implements Runnable {
                     if(!file.exists()){
                         file.createNewFile();
                         writer = new FileWriter(file,true);
-                        writer.write("  \t\t时间\t\t\t血压    呼吸    体温        报警原因\n");
+                        writer.write("  \t\t\t\t\t\t\t\t时间\t\t\t\t\t\t\t\t\t\t血压  呼吸  体温        报警原因\n");
                         writer.close();
                     }
 
                     writer = new FileWriter(file,true);
 
                     txtString.append(sdf.format(new Date())).append("\t").
-                            append("\t").append(patient.bloodPressure).append("\t\t").
-                            append(patient.respiration).append("\t\t").
-                            append(df.format(patient.temperature)).append("\t\t");
+                            append("\t").append(patient.bloodPressure).append((patient.bloodPressure>=100)?"    ":"\t\t\t\t\t").
+                            append(patient.respiration).append(patient.respiration>=10?"\t\t\t":"\t\t\t\t").
+                            append(df.format(patient.temperature)).append("\t\t\t\t");
                     writer.write(txtString.toString()+sb+"\n\n");
                     writer.close();
                     out.println(parameter.append(sb));

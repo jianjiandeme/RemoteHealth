@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -18,13 +19,14 @@ import java.util.TimerTask;
 import fragment.PatientFragment;
 import fragment.TxtFragment;
 
+import static utils.Constants.array;
 import static utils.Constants.patients;
+import static utils.Constants.zzpFile;
 
 public class InformationActivity extends AppCompatActivity {
 
     ViewPager viewPager;
     boolean type;
-
     Timer timer = new Timer();
 
     @Override
@@ -66,21 +68,36 @@ public class InformationActivity extends AppCompatActivity {
         List<Fragment> fragmentList = new ArrayList<>();
         // 标题数组
 
-        String[] titles = new String[patients.size()];
+        String[] titles ;
 
         //主界面三个Fragment
         private TabAdapter(FragmentManager fm) {
             super(fm);
-            for(int i=0;i< patients.size();i++){
+
                 if(type){
-                    titles[i] = String.valueOf(i+1);
-                    fragmentList.add(new PatientFragment().newInstance(i));
+                    for(int i=0;i< patients.size();i++) {
+                        titles = new String[patients.size()];
+                        titles[i] = String.valueOf(i + 1);
+                        fragmentList.add(new PatientFragment().newInstance(i));
+                    }
                 }
                 else {
-                    titles[i] = patients.get(i).number;
-                    fragmentList.add(new TxtFragment().newInstance(i));
+
+
+                    File file = new File(zzpFile);
+                    // get the folder list
+                    array = file.listFiles();
+                    int i = array.length;
+                    titles = new String[i];
+
+                    for(int j = 0 ; j < i ; j++){
+                        String fileName = array[j].getName();
+                        titles[j] = fileName.substring(0,fileName.lastIndexOf("txt")-1);
+                        fragmentList.add(new TxtFragment().newInstance(j));
+                    }
+
+
                 }
-            }
         }
 
         @Override

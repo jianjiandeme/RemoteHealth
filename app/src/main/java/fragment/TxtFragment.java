@@ -18,6 +18,7 @@ import java.io.FileReader;
 import Patient.Patient;
 import utils.Constants;
 
+import static utils.Constants.array;
 import static utils.Constants.patients;
 import static utils.Constants.zzpFile;
 
@@ -30,7 +31,6 @@ public class TxtFragment extends Fragment {
     //第几位病人
     int rank;
     public static final String ARGS_PAGE = "args_page";
-    Patient patient ;
     TextView scrollView;
 
     public static TxtFragment newInstance(int i){
@@ -47,7 +47,6 @@ public class TxtFragment extends Fragment {
         super.onCreateView(inflater,container,savedInstanceState);
         rank = getArguments().getInt(ARGS_PAGE);
         mView  = inflater.inflate(R.layout.fragment_txt,container,false);
-        patient = Constants.patients.get(rank);
         return mView;
     }
 
@@ -58,12 +57,12 @@ public class TxtFragment extends Fragment {
 
         StringBuilder sb = new StringBuilder();
         try{
-            FileReader reader = new FileReader(new File(zzpFile,patient.number+".txt"));
+            FileReader reader = new FileReader(new File(zzpFile,array[rank].getName()));
 
             BufferedReader bufferedReader = new BufferedReader(reader);
             String str ;
             while((str = bufferedReader.readLine()) !=null){
-                sb.append(str);
+                sb.append(str+"\n");
             }
             bufferedReader.close();
             reader.close();

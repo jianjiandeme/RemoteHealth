@@ -16,4 +16,5 @@ public class Constants {
 
     public static String zzpFile = Environment.getExternalStorageDirectory().toString()+"/zzp";
 
+    public static File[] array;
 }

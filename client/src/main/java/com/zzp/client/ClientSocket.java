@@ -138,6 +138,7 @@ import Patient.Patient;
                     if(tempFrequent !=Patient.frequent ){
                         Patient.frequent = tempFrequent;
                         if(timer!=null)timer.cancel();
+                        timer = new Timer();
                         timer.schedule(new TimerTask() {
                             @Override
                             public void run() {
