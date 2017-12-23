@@ -95,6 +95,7 @@ import Patient.Patient;
       void sendMessage() {
         String data = new ZZPRandom("normal").getRandomData();
         new Thread(()->output.println("Patient,"+data)).start();
+        print("血压："+Patient.bloodPressure+" 呼吸："+Patient.respiration+"体温 "+Patient.temperature);
     }
 
      void sendErrorMessage() {
@@ -140,19 +141,19 @@ import Patient.Patient;
                             }
                         }, Patient.frequent * 1000, Patient.frequent * 1000);
                     }
-                    print(str);
+
                 }
             }
         }
 
-        private void print(String str) {
-            getString.append(str).append("\n");
-            text.post(() ->
-                    text.setText(getString)
-            );
-        }
-    }
 
+    }
+    private void print(String str) {
+        getString.append(str).append("\n");
+        text.post(() ->
+                text.setText(getString)
+        );
+    }
     private void sendNotification(String errors) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 //设置小图标

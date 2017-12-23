@@ -1,32 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.zzp.client.MainActivity">
-
-    <Button
-        android:id="@+id/send"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="send"/>
-
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
     <Button
         android:id="@+id/sendMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="sendMessage"/>
+        android:text="@string/normal"/>
     <Button
         android:id="@+id/sendErrorMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="sendErrorMessage"/>
+        android:text="@string/error"/>
+</LinearLayout>
     <TextView
         android:id="@+id/text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="初始"/>
-
+        android:scrollbars="vertical"
+        android:fadeScrollbars="false" />
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.zzp.client;
 
+import java.text.DecimalFormat;
 import java.util.Random;
 
 import Patient.Patient;
@@ -11,32 +12,31 @@ import static Patient.Patient.respirationUp;
 import static Patient.Patient.temperatureDown;
 import static Patient.Patient.temperatureUp;
 
-/**
- * Created by zzp on 2017/11/25.
- */
 
-public class ZZPRandom {
+
+ class ZZPRandom {
     String flag;
 
-    public ZZPRandom(String flag) {
+     ZZPRandom(String flag) {
         this.flag = flag;
     }
-    public String getRandomData(){
+     String getRandomData(){
         Random random = new Random();
         String result;
         int bloodPressure,respiration;
-        float temperature;
+        String temperature;
 
 
 
-            bloodPressure = random.nextInt(bloodPressureUp) %
+            Patient.bloodPressure = random.nextInt(bloodPressureUp) %
                     (bloodPressureUp-bloodPressureDown) +bloodPressureDown;
-            respiration = random.nextInt(respirationUp) %
+        Patient.respiration = random.nextInt(respirationUp) %
                     (respirationUp-respirationDown) +respirationDown;
-            temperature = random.nextFloat()*
-                    (temperatureUp - temperatureDown)
-                     + temperatureDown;
-            result = bloodPressure+","+respiration+","+temperature+",";
+        DecimalFormat df = new DecimalFormat("0.00");
+        Patient.temperature = df.format(random.nextFloat()*
+                (temperatureUp - temperatureDown)
+                + temperatureDown);
+            result = Patient.bloodPressure+","+Patient.respiration+","+Patient.temperature+",";
 
 
         if("normal".equals(flag)) {
@@ -45,25 +45,25 @@ public class ZZPRandom {
 
         if(random.nextBoolean()){
             if(random.nextBoolean())
-                bloodPressure = bloodPressureDown - 10;
+                Patient.bloodPressure = bloodPressureDown - 10;
             else
-                bloodPressure = bloodPressureUp - 10;
+                Patient.bloodPressure = bloodPressureUp - 10;
         }
 
 
         if(random.nextBoolean()){
             if(random.nextBoolean())
-                respiration = respirationDown - 10;
+                Patient.respiration = respirationDown - 10;
             else
-                respiration = respirationUp - 10;
+                Patient.respiration = respirationUp - 10;
         }
 
         if(random.nextBoolean()) {
             if (random.nextBoolean())
-                temperature = temperatureDown - 2;
-            else temperature = temperatureUp + 2;
+                Patient.temperature = String.valueOf(temperatureDown - 2);
+            else Patient.temperature = String.valueOf(temperatureDown + 2);;
         }
-        result = bloodPressure+","+respiration+","+temperature+",";
+        result = Patient.bloodPressure+","+Patient.respiration+","+Patient.temperature+",";
         return result;
     }
 }

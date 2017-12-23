@@ -13,6 +13,7 @@ import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -45,6 +46,10 @@ public class ServerThread implements Runnable {
         PrintStream out ;
         BufferedReader buf ;
         try {
+            DecimalFormat df = new DecimalFormat("0.00");//体温数据格式
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+
+
             buf = new BufferedReader(new InputStreamReader(client.getInputStream()));
             out = new PrintStream(client.getOutputStream());
             boolean flag = true;
@@ -116,26 +121,23 @@ public class ServerThread implements Runnable {
                                 .setVibrate(new long[]{0,100,100,100});
                         manager.notify(notifyTime++ ,builder.build());
                     }
-
-
                     FileWriter writer ;
-
                     StringBuilder txtString = new StringBuilder();
                     File file = new File(zzpFile,patient.number+".txt");
                     if(!file.exists()){
                         file.createNewFile();
                         writer = new FileWriter(file,true);
-                        writer.write(patient.number+"/n  \t\t时间\t\t\t\t\t\t血压\t\t\t\t呼吸\t\t\t\t体温\n");
+                        writer.write("\t\t\t\t病历号："+patient.number+"\n\n  \t\t时间\t\t\t血压    呼吸    体温        报警原因\n");
                         writer.close();
                     }
 
                     writer = new FileWriter(file,true);
-                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-                    txtString.append(df.format(new Date())).append("\t").
-                            append("\t").append(patient.bloodPressure).append("\t").
-                            append("\t").append(patient.respiration).append("\t").
-                            append("\t").append(patient.temperature).append("\n");
-                    writer.write(txtString.toString()+sb);
+
+                    txtString.append(sdf.format(new Date())).append("\t").
+                            append("\t").append(patient.bloodPressure).append("\t\t").
+                            append(patient.respiration).append("\t\t").
+                            append(df.format(patient.temperature)).append("\t\t");
+                    writer.write(txtString.toString()+sb+"\n\n");
                     writer.close();
                     out.println(parameter.append(sb));
                     }
