@@ -15,7 +15,7 @@ import static Patient.Patient.temperatureUp;
 
 
  class ZZPRandom {
-    String flag;
+    private String flag;
 
      ZZPRandom(String flag) {
         this.flag = flag;
@@ -23,11 +23,6 @@ import static Patient.Patient.temperatureUp;
      String getRandomData(){
         Random random = new Random();
         String result;
-        int bloodPressure,respiration;
-        String temperature;
-
-
-
             Patient.bloodPressure = random.nextInt(bloodPressureUp) %
                     (bloodPressureUp-bloodPressureDown) +bloodPressureDown;
         Patient.respiration = random.nextInt(respirationUp) %
@@ -47,7 +42,7 @@ import static Patient.Patient.temperatureUp;
             if(random.nextBoolean())
                 Patient.bloodPressure = bloodPressureDown - 10;
             else
-                Patient.bloodPressure = bloodPressureUp - 10;
+                Patient.bloodPressure = bloodPressureUp + 10;
         }
 
 
@@ -55,13 +50,13 @@ import static Patient.Patient.temperatureUp;
             if(random.nextBoolean())
                 Patient.respiration = respirationDown - 10;
             else
-                Patient.respiration = respirationUp - 10;
+                Patient.respiration = respirationUp + 10;
         }
 
         if(random.nextBoolean()) {
             if (random.nextBoolean())
                 Patient.temperature = String.valueOf(temperatureDown - 2);
-            else Patient.temperature = String.valueOf(temperatureDown + 2);;
+            else Patient.temperature = String.valueOf(temperatureDown + 2);
         }
         result = Patient.bloodPressure+","+Patient.respiration+","+Patient.temperature+",";
         return result;

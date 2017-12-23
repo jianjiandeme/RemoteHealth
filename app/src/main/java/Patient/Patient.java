@@ -7,7 +7,7 @@ package Patient;
 public class Patient {
     public String number = String.valueOf(i);
     private static long i = 100000000;
-    public int frequence = 5;
+    public int frequent = 5;
     public int bloodPressure ;
     public int respiration ;
     public float temperature;

@@ -32,11 +32,6 @@ public class MyService extends Service {
             public void run() {
                 try {
 
-                    String zzpFile = Environment.getExternalStorageDirectory().toString() + "/zzp";
-                    File file1=new File(zzpFile);
-                    if(!file1.exists()){
-                        file1.mkdir();
-                    }
                     ServerSocket server = new ServerSocket(5000);
                     Socket client ;
                     while(true){

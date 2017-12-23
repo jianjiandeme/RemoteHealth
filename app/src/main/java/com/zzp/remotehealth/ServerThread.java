@@ -1,14 +1,11 @@
 package com.zzp.remotehealth;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -20,6 +17,7 @@ import java.util.Date;
 import Patient.Patient;
 
 import static utils.Constants.patients;
+import static utils.Constants.zzpFile;
 
 /**
  * Created by zzp on 2017/11/25.
@@ -29,10 +27,8 @@ public class ServerThread implements Runnable {
     private Socket client = null;
     private Context context;
     private Patient patient;
-    private String number;
     private NotificationManager manager;
     private int notifyTime = 1;
-    private String zzpFile = Environment.getExternalStorageDirectory().toString() + "/zzp";
 
     ServerThread(Socket client,Context context,NotificationManager manager) {
         this.client = client;
@@ -83,7 +79,7 @@ public class ServerThread implements Runnable {
                             append(patient.temperatureDown).append(",").
                             append(patient.temperatureUp).append(",").
                             append(patient.number).append(",").
-                            append(patient.frequence).append(" ");
+                            append(patient.frequent).append(" ");
 
                     if(patient.bloodPressure<patient.bloodPressureDown) {
                         sb.append("血压过低,");
@@ -127,7 +123,7 @@ public class ServerThread implements Runnable {
                     if(!file.exists()){
                         file.createNewFile();
                         writer = new FileWriter(file,true);
-                        writer.write("\t\t\t\t病历号："+patient.number+"\n\n  \t\t时间\t\t\t血压    呼吸    体温        报警原因\n");
+                        writer.write("  \t\t时间\t\t\t血压    呼吸    体温        报警原因\n");
                         writer.close();
                     }
 
@@ -142,7 +138,6 @@ public class ServerThread implements Runnable {
                     out.println(parameter.append(sb));
                     }
             }
-
             out.close();
             buf.close();
         } catch (Exception e) {

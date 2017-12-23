@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.zzp.remotehealth.R;
 
+import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Matcher;
@@ -21,6 +22,8 @@ import java.util.regex.Pattern;
 
 import Patient.Patient;
 import utils.Constants;
+
+import static utils.Constants.zzpFile;
 
 /**
  * Created by zzp on 2017/11/27.
@@ -79,7 +82,7 @@ public class PatientFragment extends Fragment {
                         ()->temperature.setText( String.valueOf(patient.temperature)));
 
                 frequent.post(
-                        ()->frequent.setText( String.valueOf(patient.frequence)));
+                        ()->frequent.setText( String.valueOf(patient.frequent)));
             }};
         mTimer.schedule(mTimerTask,0,1000);
 
@@ -130,7 +133,7 @@ public class PatientFragment extends Fragment {
             respirationUp = dialogView.findViewById(R.id.respirationUp);
             temperatureDown = dialogView.findViewById(R.id.temperatureDown);
             temperatureUp = dialogView.findViewById(R.id.temperatureUp);
-            freEdit.setText(String.valueOf(patient.frequence));
+            freEdit.setText(String.valueOf(patient.frequent));
             bloodPressureDown.setText(String.valueOf(patient.bloodPressureDown));
             bloodPressureUp.setText(String.valueOf(patient.bloodPressureUp));
             respirationDown.setText(String.valueOf(patient.respirationDown));
@@ -139,6 +142,7 @@ public class PatientFragment extends Fragment {
             temperatureUp.setText(String.valueOf(patient.temperatureUp));
 
         enter.setOnClickListener((view1)-> {
+            boolean isError = false;
             try {
                 String str= numberEdit.getText().toString();
             if("".equals(str)){
@@ -148,13 +152,22 @@ public class PatientFragment extends Fragment {
                 Pattern pattern = Pattern.compile("^[0-9]{9}$");
                 Matcher isNum = pattern.matcher(str);
                 if (!isNum.matches()) {
-                    Toast.makeText(getContext(),"输入有误",Toast.LENGTH_SHORT).show();
+                    isError = true ;
+
                 }else {
+                    String oldNumber  = patient.number;
                     patient.number = numberEdit.getText().toString();
+                    File oldFile = new File(zzpFile,oldNumber+".txt");
+                    String rootPath = oldFile.getParent();
+                    File newFile = new File(rootPath+File.separator+patient.number+".txt");
+                    oldFile.renameTo(newFile);
                 }
             }
-            if(!"".equals(freEdit.getText().toString()))
-                    patient.frequence = Integer.parseInt(freEdit.getText().toString());
+            if(!"".equals(freEdit.getText().toString())){
+                int tempFre = Integer.parseInt(freEdit.getText().toString());
+                if(tempFre >= 1 && tempFre <= 3600) patient.frequent = Integer.parseInt(freEdit.getText().toString());
+                else isError = true;
+            }
             if(!"".equals(bloodPressureDown.getText().toString()))
                 patient.bloodPressureDown = Integer.parseInt(bloodPressureDown.getText().toString());
             if(!"".equals(bloodPressureUp.getText().toString()))
@@ -168,8 +181,11 @@ public class PatientFragment extends Fragment {
             if(!"".equals(temperatureUp.getText().toString()))
                 patient.temperatureUp = Float.parseFloat(temperatureUp.getText().toString());
             }catch (Exception e){
-                Toast.makeText(getContext(),"输入有误",Toast.LENGTH_SHORT).show();
+                isError = true;
             }finally {
+                if(isError)
+                    Toast.makeText(getContext(),"输入有误",Toast.LENGTH_SHORT).show();
+
                 dialog.dismiss();
             }
         });

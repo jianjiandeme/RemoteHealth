@@ -11,11 +11,11 @@
         android:id="@+id/fragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fragment"/>
+        android:text="监控"/>
 
     <Button
-    android:id="@+id/houtai"
+    android:id="@+id/txtFile"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="后台"/>
+    android:text="日志文件"/>
 </LinearLayout>

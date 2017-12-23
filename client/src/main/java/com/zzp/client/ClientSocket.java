@@ -92,6 +92,9 @@ import Patient.Patient;
         }
             return null;
     }
+
+
+
       void sendMessage() {
         String data = new ZZPRandom("normal").getRandomData();
         new Thread(()->output.println("Patient,"+data)).start();
@@ -134,6 +137,7 @@ import Patient.Patient;
                     int tempFrequent =  Integer.parseInt(limits[7].trim());
                     if(tempFrequent !=Patient.frequent ){
                         Patient.frequent = tempFrequent;
+                        if(timer!=null)timer.cancel();
                         timer.schedule(new TimerTask() {
                             @Override
                             public void run() {
@@ -163,6 +167,6 @@ import Patient.Patient;
                 //设置通知内容
                 .setContentText(errors)
                 .setVibrate(new long[]{0,100,100,100});
-        manager.notify( notiTime++ , builder.build() );
+        manager.notify( notiTime++%10 , builder.build() );
     }
 }

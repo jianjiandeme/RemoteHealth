@@ -1,5 +1,8 @@
 package utils;
 
+import android.os.Environment;
+
+import java.io.File;
 import java.util.ArrayList;
 
 import Patient.Patient;
@@ -10,5 +13,7 @@ import Patient.Patient;
 
 public class Constants {
     public static ArrayList<Patient> patients = new ArrayList<Patient>() ;
+
+    public static String zzpFile = Environment.getExternalStorageDirectory().toString()+"/zzp";
 
 }
