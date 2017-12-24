@@ -19,9 +19,6 @@ import Patient.Patient;
 import static utils.Constants.patients;
 import static utils.Constants.zzpFile;
 
-/**
- * Created by zzp on 2017/11/25.
- */
 
 public class ServerThread implements Runnable {
     private Socket client = null;
@@ -69,6 +66,7 @@ public class ServerThread implements Runnable {
                         patient.respiration = Integer.parseInt(data[2]);
                         patient.temperature = Float.parseFloat(data[3]);
                     }
+                    patient.dataChanged();
                     boolean isError = false;
                     StringBuilder parameter = new StringBuilder();
                     StringBuilder sb = new StringBuilder();

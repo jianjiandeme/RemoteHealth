@@ -1,10 +1,12 @@
 package Patient;
 
+import java.util.Observable;
+
 /**
  * Created by zzp on 2017/11/22.
  */
 
-public class Patient {
+public class Patient extends Observable{
     public String number = String.valueOf(i);
     private static long i = 100000000;
     public int frequent = 5;
@@ -26,5 +28,10 @@ public class Patient {
         i++;
     }
 
+    public void dataChanged(){
+        //观察者模式通知观察者
+        setChanged();
+        notifyObservers();
+    }
 
 }

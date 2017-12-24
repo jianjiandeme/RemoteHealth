@@ -9,6 +9,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Window;
+import android.view.WindowManager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -32,6 +34,8 @@ public class InformationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_information);
         Intent intent = getIntent();
         type = intent.getBooleanExtra("type",true);
@@ -39,7 +43,7 @@ public class InformationActivity extends AppCompatActivity {
         // 视图对象
         // 自定义类，导航布局的适配器
         viewPager = findViewById(R.id.viewPager);
-        viewPager .setOffscreenPageLimit(2);
+        viewPager .setOffscreenPageLimit(1);
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         // 新建适配器
         TabAdapter tabAdapter = new TabAdapter(getSupportFragmentManager());
@@ -82,8 +86,6 @@ public class InformationActivity extends AppCompatActivity {
                     }
                 }
                 else {
-
-
                     File file = new File(zzpFile);
                     // get the folder list
                     array = file.listFiles();
