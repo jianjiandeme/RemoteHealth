@@ -15,7 +15,14 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 
+import java.util.Observer;
+
 import Patient.Patient;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 import utils.Constants;
 
 import static utils.Constants.array;
@@ -55,22 +62,43 @@ public class TxtFragment extends Fragment {
         super.onStart();
         scrollView = mView.findViewById(R.id.txt);
 
-        StringBuilder sb = new StringBuilder();
-        try{
-            FileReader reader = new FileReader(new File(zzpFile,array[rank].getName()));
-
-            BufferedReader bufferedReader = new BufferedReader(reader);
-            String str ;
-            while((str = bufferedReader.readLine()) !=null){
-                sb.append(str+"\n");
+        Observable.from(array)
+        .filter((file)->file.getName().endsWith(".txt"))
+        .map((file)->{
+            StringBuilder sb = new StringBuilder();
+            try{
+                FileReader reader = new FileReader(file);
+                BufferedReader bufferedReader = new BufferedReader(reader);
+                String str ;
+                while((str = bufferedReader.readLine()) !=null){
+                    sb.append(str+"\n");
+                }
+                bufferedReader.close();
+                reader.close();
+            }catch (Exception e){
+                e.printStackTrace();
             }
-            bufferedReader.close();
-            reader.close();
-        }catch (Exception e){
+            return sb.toString();
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe((s)->scrollView.setText(s));
 
-        }finally {
-            scrollView.setText(sb.toString());
-        }
+//        StringBuilder sb = new StringBuilder();
+//        try{
+//            FileReader reader = new FileReader(new File(zzpFile,array[rank].getName()));
+//
+//            BufferedReader bufferedReader = new BufferedReader(reader);
+//            String str ;
+//            while((str = bufferedReader.readLine()) !=null){
+//                sb.append(str+"\n");
+//            }
+//            bufferedReader.close();
+//            reader.close();
+//        }catch (Exception e){
+//
+//        }finally {
+//            scrollView.setText(sb.toString());
+//        }
     }
-
-    }
+}
