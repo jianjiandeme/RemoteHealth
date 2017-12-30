@@ -74,7 +74,6 @@ public class InformationActivity extends AppCompatActivity {
 
         String[] titles ;
 
-        //主界面三个Fragment
         private TabAdapter(FragmentManager fm) {
             super(fm);
 

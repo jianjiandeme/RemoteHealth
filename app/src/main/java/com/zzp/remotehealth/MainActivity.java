@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import java.io.File;
 
@@ -21,7 +22,7 @@ import static utils.Constants.zzpFile;
     * @version 1.0
  */
 public class MainActivity extends AppCompatActivity {
-    Button fragment, houTai;
+    LinearLayout fragment, houTai;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +36,6 @@ public class MainActivity extends AppCompatActivity {
         if(!file1.exists()){
             file1.mkdir();
         }
-        Patient patient = new Patient(90,18,42);
-        patients.add(patient);
-
 
         startService(new Intent(this, MyService.class));
         fragment.setOnClickListener((v) -> {

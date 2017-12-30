@@ -12,8 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.jakewharton.rxbinding2.view.RxView;
 import com.zzp.remotehealth.R;
 
 import java.io.File;
@@ -21,14 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.concurrent.TimeUnit;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import Patient.Patient;
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Line;
@@ -45,20 +41,14 @@ public class PatientFragment extends Fragment implements Observer {
     //第几位病人
     int rank;
     public static final String ARGS_PAGE = "args_page";
+
+    TextView number;
     Patient patient;
+    Button set ;
     int i = 0;
 
 
-    @Bind(R.id.number)
-    TextView number;
-    @Bind(R.id.set)
-    Button set;
-    @Bind(R.id.bloodPressureLineChart)
-    LineChartView bloodLineChart;
-    @Bind(R.id.respirationLineChart)
-    LineChartView repLineChart;
-    @Bind(R.id.temperatureLineChart)
-    LineChartView tempLineChart;
+    LineChartView bloodLineChart,repLineChart,tempLineChart;
     private List<PointValue> bloodPointValues = new ArrayList<>();
     private List<PointValue> repPointValues = new ArrayList<>();
     private List<PointValue> tempPointValues = new ArrayList<>();
@@ -82,7 +72,6 @@ public class PatientFragment extends Fragment implements Observer {
         mView = inflater.inflate(R.layout.fragment_patient, container, false);
         patient = Constants.patients.get(rank);
         patient.addObserver(this);
-        ButterKnife.bind(this, mView);
         return mView;
     }
 
@@ -98,13 +87,11 @@ public class PatientFragment extends Fragment implements Observer {
     private void initView(View view) {
 
         number = view.findViewById(R.id.number);
-        number.setText(patient.number);
+        number.setText("病历号："+patient.number);
 
         set = view.findViewById(R.id.set);
-        RxView.clicks(set)
-                .throttleFirst(1, TimeUnit.SECONDS)
-                .subscribe((view1) -> showDialog());
-//        set.setOnClickListener((view1)->showDialog());
+        set.setOnClickListener((view1)->showDialog());
+
 
 
         bloodLineChart = view.findViewById(R.id.bloodPressureLineChart);
@@ -160,20 +147,35 @@ public class PatientFragment extends Fragment implements Observer {
         axisX.setHasTiltedLabels(true);
         axisX.setTextColor(Color.BLACK);  //设置字体颜色
         axisX.setName("近十次数据");  //表格名称
-        axisX.setTextSize(10);//设置字体大小
+        axisX.setTextSize(20);//设置字体大小
         axisX.setMaxLabelChars(10);  //最多几个X轴坐标
         axisX.setValues(mAxisValues);  //填充X轴的坐标名称
         bloodData.setAxisXBottom(axisX); //x 轴在底部
         repData.setAxisXBottom(axisX);
         tempData.setAxisXBottom(axisX);
 
-        Axis axisY = new Axis();  //Y轴
-        axisY.setMaxLabelChars(5); //默认是3，只能看最后三个数字
-        axisY.setName("温度");//y轴标注
-        axisY.setTextSize(10);//设置字体大小
-        bloodData.setAxisYLeft(axisY);  //Y轴设置在左边
-        repData.setAxisYLeft(axisY);
-        tempData.setAxisYLeft(axisY);
+        Axis axisY1 = new Axis();  //Y轴
+        axisY1.setMaxLabelChars(5); //默认是3，只能看最后三个数字
+        axisY1.setName("血压");//y轴标注
+        axisY1.setTextColor(Color.BLACK);
+        axisY1.setTextSize(12);//设置字体大小
+        bloodData.setAxisYLeft(axisY1);  //Y轴设置在左边
+
+
+        Axis axisY2 = new Axis();  //Y轴
+        axisY2.setMaxLabelChars(5); //默认是3，只能看最后三个数字
+        axisY2.setName("呼吸");//y轴标注
+        axisY2.setTextColor(Color.BLACK);
+        axisY2.setTextSize(12);//设置字体大小
+        repData.setAxisYLeft(axisY2);
+
+
+        Axis axisY3 = new Axis();  //Y轴
+        axisY3.setMaxLabelChars(5); //默认是3，只能看最后三个数字
+        axisY3.setName("体温");//y轴标注
+        axisY3.setTextColor(Color.BLACK);
+        axisY3.setTextSize(12);//设置字体大小
+        tempData.setAxisYLeft(axisY3);
 
 
         //设置行为属性，支持缩放、滑动以及平移
@@ -236,7 +238,7 @@ public class PatientFragment extends Fragment implements Observer {
                     } else {
                         String oldNumber = patient.number;
                         patient.number = numberEdit.getText().toString();
-                        number.setText(patient.number);
+                        number.setText("病历号："+patient.number);
                         File oldFile = new File(zzpFile, oldNumber + ".text_file");
                         String rootPath = oldFile.getParent();
                         File newFile = new File(rootPath + File.separator + patient.number + ".text_file");
@@ -293,11 +295,6 @@ public class PatientFragment extends Fragment implements Observer {
 
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
 }
 
 

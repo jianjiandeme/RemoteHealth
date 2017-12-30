@@ -84,21 +84,5 @@ public class TxtFragment extends Fragment {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe((s)->scrollView.setText(s));
 
-//        StringBuilder sb = new StringBuilder();
-//        try{
-//            FileReader reader = new FileReader(new File(zzpFile,array[rank].getName()));
-//
-//            BufferedReader bufferedReader = new BufferedReader(reader);
-//            String str ;
-//            while((str = bufferedReader.readLine()) !=null){
-//                sb.append(str+"\n");
-//            }
-//            bufferedReader.close();
-//            reader.close();
-//        }catch (Exception e){
-//
-//        }finally {
-//            scrollView.setText(sb.toString());
-//        }
     }
 }

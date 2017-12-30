@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.support.v4.app.NotificationCompat;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -52,11 +53,12 @@ import Patient.Patient;
 
         } catch (UnknownHostException e) {
             // TODO Auto-generated catch block
+            Toast.makeText(context,"请检查连接",Toast.LENGTH_SHORT).show();
             System.out.println("请检查端口号是否为服务器IP");
             e.printStackTrace();
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            System.out.println("服务器未开启");
+            Toast.makeText(context,"请检查连接",Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
         timer.schedule(new TimerTask() {

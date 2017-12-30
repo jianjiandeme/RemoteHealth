@@ -5,10 +5,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.zzp.remotehealth.MainActivity">
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_height="0dp"></LinearLayout>
+    <LinearLayout
+        android:id="@+id/fragment"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_width="match_parent"
+        android:layout_weight="2"
+        android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="50dp"
         android:gravity="center_horizontal"
@@ -20,18 +27,25 @@
             android:src="@drawable/patient" />
 
         <Button
-            android:id="@+id/fragment"
+            android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
+            android:textSize="25sp"
             android:background="@null"
             android:text="病人信息" />
     </LinearLayout>
 
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_weight="1"
+    android:layout_height="0dp"></LinearLayout>
     <LinearLayout
+        android:id="@+id/txtFile"
+        android:clickable="true"
+        android:focusable="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="50dp"
         android:layout_marginBottom="50dp"
@@ -44,11 +58,15 @@
             android:src="@drawable/text_file" />
 
         <Button
-            android:id="@+id/txtFile"
+            android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:textSize="25sp"
             android:background="@null"
             android:text="日志文件" />
     </LinearLayout>
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp"></LinearLayout>
 </LinearLayout>
