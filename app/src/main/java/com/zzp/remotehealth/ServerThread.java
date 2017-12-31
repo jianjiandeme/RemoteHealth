@@ -18,6 +18,7 @@ import Patient.Patient;
 
 import static utils.Constants.patients;
 import static utils.Constants.zzpFile;
+import static utils.Constants.notifyTime;
 
 
 public class ServerThread implements Runnable {
@@ -25,7 +26,7 @@ public class ServerThread implements Runnable {
     private Context context;
     private Patient patient;
     private NotificationManager manager;
-    private int notifyTime = 1;
+
 
     ServerThread(Socket client,Context context,NotificationManager manager) {
         this.client = client;

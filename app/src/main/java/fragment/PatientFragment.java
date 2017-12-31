@@ -103,6 +103,10 @@ public class PatientFragment extends Fragment implements Observer {
 
 
     private void initLineChart() {
+
+        bloodPointValues.add(new PointValue(i++,patient.bloodPressure));
+        repPointValues .add(new PointValue(i++,patient.respiration));
+        tempPointValues.add(new PointValue(i++,patient.temperature));
         //折线的颜色
         Line bloodLine = new Line(bloodPointValues).setColor(Color.GREEN).setCubic(false);
         Line repLine = new Line(repPointValues).setColor(Color.GREEN).setCubic(false);

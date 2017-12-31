@@ -117,7 +117,7 @@ import Patient.Patient;
             super.run();
             while (true) {
                 String str = receiveData();
-                if (str.length() > 1) {
+                if (str!=null && str.length() > 1) {
                     String[] limits ;
                     String errors;
                     if(str.contains("过")){
@@ -146,7 +146,7 @@ import Patient.Patient;
                             public void run() {
                                 sendMessage();
                             }
-                        }, Patient.frequent * 1000, Patient.frequent * 1000);
+                        }, 0, Patient.frequent * 1000);
                     }
 
                 }
