@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button sendMessageBtn = findViewById(R.id.sendMessage);
         Button sendErrorMessageBtn = findViewById(R.id.sendErrorMessage);
+        Button sendEnd = findViewById(R.id.sendEnd);
         text = findViewById(R.id.text);
         text.setMovementMethod(ScrollingMovementMethod.getInstance());
         String hostIp;
@@ -58,14 +59,20 @@ public class MainActivity extends AppCompatActivity {
         }
         sendMessageBtn.setOnClickListener((v)-> clientSocket.sendMessage());
         sendErrorMessageBtn.setOnClickListener((v)-> clientSocket.sendErrorMessage());
+        sendEnd.setOnClickListener((v -> {
+            clientSocket.senEnd();
+            clientSocket.closeSocket();
+        }));
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(clientSocket.timer != null){
-            clientSocket.timer.cancel();
+        if(clientSocket!= null){
+            clientSocket.senEnd();
+            clientSocket.closeSocket();
         }
+
     }
 }
 

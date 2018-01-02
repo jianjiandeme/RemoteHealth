@@ -32,6 +32,7 @@ import Patient.Patient;
     private NotificationManager manager;
     public Timer timer = new Timer();
     private int notiTime = 1;
+    private String data ;
 
      ClientSocket(TextView text,Context context,String hostIp,NotificationManager manager) {
         this.text = text ;
@@ -98,17 +99,20 @@ import Patient.Patient;
 
 
       void sendMessage() {
-        String data = new ZZPRandom("normal").getRandomData();
+         data = new ZZPRandom("normal").getRandomData();
         new Thread(()->output.println("Patient,"+data)).start();
         print("血压："+Patient.bloodPressure+" 呼吸："+Patient.respiration+"体温 "+Patient.temperature);
     }
 
      void sendErrorMessage() {
-        String data = new ZZPRandom("Error").getRandomData();
+         data = new ZZPRandom("Error").getRandomData();
         new Thread(()->output.println("Patient,"+data)).start();
     }
 
-
+    public void senEnd() {
+         data = "end";
+        new Thread(()->output.println(data)).start();
+    }
 
 
     private class ReadThread extends Thread{
@@ -171,5 +175,14 @@ import Patient.Patient;
                 .setContentText(errors)
                 .setVibrate(new long[]{0,100,100,100});
         manager.notify( notiTime++%10 , builder.build() );
+    }
+
+    public void closeSocket(){
+         try{
+             if(timer!= null){
+                 timer.cancel();
+             }
+         }catch (Exception e){
+         }
     }
 }

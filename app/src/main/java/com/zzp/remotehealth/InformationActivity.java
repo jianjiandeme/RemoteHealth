@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -78,12 +79,19 @@ public class InformationActivity extends AppCompatActivity {
             super(fm);
 
                 if(type){
-                    for(int i=0;i< patients.size();i++) {
-                        titles = new String[patients.size()];
-                        titles[i] = String.valueOf(i + 1);
-                        fragmentList.add(new PatientFragment().newInstance(i));
+                    int t = patients.size() ;
+                    if(!patients.isEmpty()){
+                        for(int i=0;i< t ;i++) {
+                            titles = new String[patients.size()];
+                            titles[i] = String.valueOf(i + 1);
+                            fragmentList.add(new PatientFragment().newInstance(i));
+                        }
+                    }else {
+                        Toast.makeText(getApplicationContext(),"暂无已连接的监护器",Toast.LENGTH_SHORT).show();
+                        finish();
                     }
-                }
+                    }
+
                 else {
                     File file = new File(zzpFile);
                     // get the folder list

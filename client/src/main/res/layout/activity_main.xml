@@ -5,25 +5,31 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.zzp.client.MainActivity">
-<LinearLayout
-    android:orientation="horizontal"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-    <Button
-        android:id="@+id/sendMessage"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/normal"/>
-    <Button
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/sendMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/normal"/>
+        <Button
         android:id="@+id/sendErrorMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/error"/>
-</LinearLayout>
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical"
-        android:fadeScrollbars="false" />
+        <Button
+            android:id="@+id/sendEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sendend"/>
+    </LinearLayout>
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:fadeScrollbars="false" />
 </LinearLayout>

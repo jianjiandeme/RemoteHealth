@@ -27,9 +27,7 @@ public class MyService extends Service {
 
     private void initSocket() {
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
+        new Thread(()->{
                 try {
 
                     ServerSocket server = new ServerSocket(5000);
@@ -42,7 +40,6 @@ public class MyService extends Service {
                 }catch (Exception e){
                     e.printStackTrace();
                 }
-            }
-        }).start();
+            }).start();
     }
 }
