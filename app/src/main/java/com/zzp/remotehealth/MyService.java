@@ -29,7 +29,6 @@ public class MyService extends Service {
 
         new Thread(()->{
                 try {
-
                     ServerSocket server = new ServerSocket(5000);
                     Socket client ;
                     while(true){

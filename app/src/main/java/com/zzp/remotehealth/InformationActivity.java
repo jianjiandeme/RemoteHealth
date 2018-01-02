@@ -31,6 +31,8 @@ public class InformationActivity extends AppCompatActivity {
     ViewPager viewPager;
     boolean type;
     Timer timer = new Timer();
+    int tempSize ;
+    TabAdapter tabAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,21 +49,25 @@ public class InformationActivity extends AppCompatActivity {
         viewPager .setOffscreenPageLimit(1);
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         // 新建适配器
-        TabAdapter tabAdapter = new TabAdapter(getSupportFragmentManager());
+        tabAdapter = new TabAdapter(getSupportFragmentManager());
         // 设置适配器
         viewPager.setAdapter(tabAdapter);
+        tempSize = patients.size();
 
         // 绑定viewpager
         tabLayout.setupWithViewPager(viewPager);
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        tabAdapter.notifyDataSetChanged();
-                    }
-                });
+                if(patients.size()!= tempSize){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            tabAdapter = new TabAdapter(getSupportFragmentManager());
+                        }
+                    });
+                }
+
             }
         },1000,1000);
 
@@ -104,8 +110,6 @@ public class InformationActivity extends AppCompatActivity {
                         titles[j] = fileName.substring(0,fileName.lastIndexOf("txt")-1);
                         fragmentList.add(new TxtFragment().newInstance(j));
                     }
-
-
                 }
         }
 

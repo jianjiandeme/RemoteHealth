@@ -2,5 +2,6 @@
     <string name="app_name">Client</string>
     <string name="error">错误数据</string>
     <string name="normal">手动发送</string>
-    <string name="sendend">断开连接</string>
+    <string name="sendEnd">断开连接</string>
+    <string name="restart">重新连接</string>
 </resources>

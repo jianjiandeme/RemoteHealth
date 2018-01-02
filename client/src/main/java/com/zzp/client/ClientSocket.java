@@ -181,6 +181,7 @@ import Patient.Patient;
          try{
              if(timer!= null){
                  timer.cancel();
+                 socket.close();
              }
          }catch (Exception e){
          }

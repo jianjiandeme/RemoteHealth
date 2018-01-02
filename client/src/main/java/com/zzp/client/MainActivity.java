@@ -20,6 +20,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
     TextView text ;
     ClientSocket clientSocket ;
+    String hostIp;
 
 
     @Override
@@ -31,9 +32,9 @@ public class MainActivity extends AppCompatActivity {
         Button sendMessageBtn = findViewById(R.id.sendMessage);
         Button sendErrorMessageBtn = findViewById(R.id.sendErrorMessage);
         Button sendEnd = findViewById(R.id.sendEnd);
+        Button restart = findViewById(R.id.restart);
         text = findViewById(R.id.text);
         text.setMovementMethod(ScrollingMovementMethod.getInstance());
-        String hostIp;
 
         WifiManager wifiManager=(WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         if(!wifiManager.isWifiEnabled())  {
@@ -63,6 +64,16 @@ public class MainActivity extends AppCompatActivity {
             clientSocket.senEnd();
             clientSocket.closeSocket();
         }));
+        restart.setOnClickListener((v)->{
+            if (clientSocket == null) {
+                clientSocket = new ClientSocket(
+                        text,
+                        getApplicationContext(),
+                        hostIp,
+                        (NotificationManager) getSystemService(NOTIFICATION_SERVICE)
+                );
+            }
+        });
     }
 
     @Override
