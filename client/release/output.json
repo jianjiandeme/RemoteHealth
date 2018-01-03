@@ -1,1 +1,1 @@
-[{"outputType":{"type":"APK"},"apkInfo":{"type":"MAIN","splits":[],"versionCode":1},"outputFile":{"path":"E:\\Android\\DailyTest\\RemoteHealth\\client\\release\\app-release.apk"},"properties":{"packageId":"com.zzp.remotehealth","split":""}}]
+[{"outputType":{"type":"APK"},"apkInfo":{"type":"MAIN","splits":[],"versionCode":1},"outputFile":{"path":"E:\\Android\\RemoteHealth\\client\\release\\client-release.apk"},"properties":{"packageId":"com.zzp.client","split":""}}]

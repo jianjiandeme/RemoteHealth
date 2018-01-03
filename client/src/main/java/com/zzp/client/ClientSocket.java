@@ -143,7 +143,7 @@ import Patient.Patient;
                     int tempFrequent =  Integer.parseInt(limits[7].trim());
                     if(tempFrequent !=Patient.frequent ){
                         Patient.frequent = tempFrequent;
-                        if(timer!=null)timer.cancel();
+                        if(timer!=null)     timer.cancel();
                         timer = new Timer();
                         timer.schedule(new TimerTask() {
                             @Override
@@ -161,8 +161,13 @@ import Patient.Patient;
     }
     private void print(String str) {
         getString.append(str).append("\n");
-        text.post(() ->
-                text.setText(getString)
+        text.post(() ->{
+                    text.setText(getString);
+            int offset=text.getLineCount()*text.getLineHeight();
+            if(offset>text.getHeight()) {
+                text.scrollTo(0, offset - text.getHeight());
+            }
+        }
         );
     }
     private void sendNotification(String errors) {
@@ -181,8 +186,8 @@ import Patient.Patient;
          try{
              if(timer!= null){
                  timer.cancel();
-                 socket.close();
              }
+             socket.close();
          }catch (Exception e){
          }
     }

@@ -60,6 +60,7 @@ public class InformationActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if(patients.size()!= tempSize){
+                    tempSize = patients.size();
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

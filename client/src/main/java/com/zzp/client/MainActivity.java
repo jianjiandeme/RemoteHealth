@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         if(!wifiManager.isWifiEnabled())  {
             Toast.makeText( this, "请连接服务器WiFi,并重启应用",
                     Toast.LENGTH_SHORT).show();
-            finish();
 
         }else {
             DhcpInfo dhcpInfo = wifiManager.getDhcpInfo();
@@ -49,31 +48,29 @@ public class MainActivity extends AppCompatActivity {
             hostIp = (i & 0xFF) + "." + ((i >> 8) & 0xFF) + "." + ((i >> 16) & 0xFF)
                     + "." + (i >> 24 & 0xFF);
 
-            if (clientSocket == null) {
-                clientSocket = new ClientSocket(
-                        text,
-                        getApplicationContext(),
-                        hostIp,
-                        (NotificationManager) getSystemService(NOTIFICATION_SERVICE)
-                );
-            }
+            startClient();
         }
-        sendMessageBtn.setOnClickListener((v)-> clientSocket.sendMessage());
+        sendMessageBtn.setOnClickListener((v)-> {
+            startClient();
+            clientSocket.sendMessage();
+        });
         sendErrorMessageBtn.setOnClickListener((v)-> clientSocket.sendErrorMessage());
         sendEnd.setOnClickListener((v -> {
             clientSocket.senEnd();
-            clientSocket.closeSocket();
+            clientSocket = null ;
         }));
-        restart.setOnClickListener((v)->{
-            if (clientSocket == null) {
-                clientSocket = new ClientSocket(
-                        text,
-                        getApplicationContext(),
-                        hostIp,
-                        (NotificationManager) getSystemService(NOTIFICATION_SERVICE)
-                );
-            }
-        });
+        restart.setOnClickListener((v)-> startClient());}
+
+    private void startClient() {
+
+        if (clientSocket == null) {
+            clientSocket = new ClientSocket(
+                    text,
+                    getApplicationContext(),
+                    hostIp,
+                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE)
+            );
+        }
     }
 
     @Override
@@ -83,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
             clientSocket.senEnd();
             clientSocket.closeSocket();
         }
-
     }
 }
 

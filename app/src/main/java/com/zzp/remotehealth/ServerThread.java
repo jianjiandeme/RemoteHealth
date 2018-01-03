@@ -50,12 +50,11 @@ public class ServerThread implements Runnable {
 
             while (flag) {
                 String str = buf.readLine();
-                if (str == null || "".equals(str)) {
-                    flag = false;
-                } else if ("end".equals(str)) {
-                    patients.remove(patient);
-                        break;
-                    } else if(str.contains("Patient")){
+                    if (str == null || "".equals(str)) {
+                        flag = false;
+                    }
+
+                    else if(str.contains("Patient")){
                     String[] data = str.split(",");
                     if(patient == null){
                         patient = new Patient(Integer.parseInt(data[1]),
@@ -136,6 +135,10 @@ public class ServerThread implements Runnable {
                     writer.write(txtString.toString()+sb+"\n\n");
                     writer.close();
                     out.println(parameter.append(sb));
+                    }
+                    else if ("end".equals(str)) {
+                        patients.remove(patient);
+                        return ;
                     }
             }
             out.close();

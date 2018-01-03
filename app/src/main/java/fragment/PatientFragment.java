@@ -160,7 +160,7 @@ public class PatientFragment extends Fragment implements Observer {
 
         Axis axisY1 = new Axis();  //Y轴
         axisY1.setMaxLabelChars(5); //默认是3，只能看最后三个数字
-        axisY1.setName("血压");//y轴标注
+        axisY1.setName("血压(mmHg)");//y轴标注
         axisY1.setTextColor(Color.BLACK);
         axisY1.setTextSize(12);//设置字体大小
         bloodData.setAxisYLeft(axisY1);  //Y轴设置在左边
@@ -168,7 +168,7 @@ public class PatientFragment extends Fragment implements Observer {
 
         Axis axisY2 = new Axis();  //Y轴
         axisY2.setMaxLabelChars(5); //默认是3，只能看最后三个数字
-        axisY2.setName("呼吸");//y轴标注
+        axisY2.setName("呼吸(次/分钟)");//y轴标注
         axisY2.setTextColor(Color.BLACK);
         axisY2.setTextSize(12);//设置字体大小
         repData.setAxisYLeft(axisY2);
@@ -176,7 +176,7 @@ public class PatientFragment extends Fragment implements Observer {
 
         Axis axisY3 = new Axis();  //Y轴
         axisY3.setMaxLabelChars(5); //默认是3，只能看最后三个数字
-        axisY3.setName("体温");//y轴标注
+        axisY3.setName("体温(℃)");//y轴标注
         axisY3.setTextColor(Color.BLACK);
         axisY3.setTextSize(12);//设置字体大小
         tempData.setAxisYLeft(axisY3);
@@ -283,6 +283,7 @@ public class PatientFragment extends Fragment implements Observer {
 
     @Override
     public void update(Observable observable, Object o) {
+
         if (bloodPointValues.size() == 10) {
             bloodPointValues.remove(0);
             repPointValues.remove(0);

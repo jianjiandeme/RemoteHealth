@@ -61,8 +61,8 @@ public class TxtFragment extends Fragment {
     public void onStart() {
         super.onStart();
         scrollView = mView.findViewById(R.id.txt);
-
-        Observable.from(array)
+        //RxJava读取文件
+        Observable.just(array[rank])
         .filter((file)->file.getName().endsWith(".txt"))
         .map((file)->{
             StringBuilder sb = new StringBuilder();

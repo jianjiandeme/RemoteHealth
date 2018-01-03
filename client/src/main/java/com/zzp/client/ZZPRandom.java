@@ -23,7 +23,7 @@ import static Patient.Patient.temperatureUp;
      String getRandomData(){
         Random random = new Random();
         String result;
-            Patient.bloodPressure = random.nextInt(bloodPressureUp) %
+        Patient.bloodPressure = random.nextInt(bloodPressureUp) %
                     (bloodPressureUp-bloodPressureDown) +bloodPressureDown;
         Patient.respiration = random.nextInt(respirationUp) %
                     (respirationUp-respirationDown) +respirationDown;
@@ -31,7 +31,7 @@ import static Patient.Patient.temperatureUp;
         Patient.temperature = df.format(random.nextFloat()*
                 (temperatureUp - temperatureDown)
                 + temperatureDown);
-            result = Patient.bloodPressure+","+Patient.respiration+","+Patient.temperature+",";
+        result = Patient.bloodPressure+","+Patient.respiration+","+Patient.temperature+",";
 
 
         if("normal".equals(flag)) {
@@ -40,23 +40,23 @@ import static Patient.Patient.temperatureUp;
 
         if(random.nextBoolean()){
             if(random.nextBoolean())
-                Patient.bloodPressure = bloodPressureDown - 10;
+                Patient.bloodPressure = bloodPressureDown - random.nextInt(10);
             else
-                Patient.bloodPressure = bloodPressureUp + 10;
+                Patient.bloodPressure = bloodPressureUp + random.nextInt(10);
         }
 
 
         if(random.nextBoolean()){
             if(random.nextBoolean())
-                Patient.respiration = respirationDown - 10;
+                Patient.respiration = respirationDown - random.nextInt(5);
             else
-                Patient.respiration = respirationUp + 10;
+                Patient.respiration = respirationUp + random.nextInt(5);
         }
 
         if(random.nextBoolean()) {
             if (random.nextBoolean())
-                Patient.temperature = String.valueOf(temperatureDown - 2);
-            else Patient.temperature = String.valueOf(temperatureDown + 2);
+                Patient.temperature = String.valueOf(temperatureDown - random.nextFloat()*2);
+            else Patient.temperature = String.valueOf(temperatureDown + random.nextFloat()*2);
         }
         result = Patient.bloodPressure+","+Patient.respiration+","+Patient.temperature+",";
         return result;
