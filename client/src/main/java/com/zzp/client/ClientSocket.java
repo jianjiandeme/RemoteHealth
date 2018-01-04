@@ -111,6 +111,7 @@ import Patient.Patient;
 
     public void senEnd() {
          data = "end";
+         if(timer!= null)timer.cancel();
         new Thread(()->output.println(data)).start();
     }
 

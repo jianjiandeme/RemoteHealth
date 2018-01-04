@@ -113,7 +113,7 @@ public class ServerThread implements Runnable {
                                 .setContentTitle(patient.number)
                                 //设置通知内容
                                 .setContentText(sb.toString())
-                                .setVibrate(new long[]{0,1000,200,1000});
+                                .setVibrate(new long[]{0,1000});
                         manager.notify(notifyTime++ ,builder.build());
                     }
                     FileWriter writer ;

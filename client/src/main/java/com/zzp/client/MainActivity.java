@@ -36,28 +36,38 @@ public class MainActivity extends AppCompatActivity {
         text = findViewById(R.id.text);
         text.setMovementMethod(ScrollingMovementMethod.getInstance());
 
-        WifiManager wifiManager=(WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        if(!wifiManager.isWifiEnabled())  {
-            Toast.makeText( this, "请连接服务器WiFi,并重启应用",
-                    Toast.LENGTH_SHORT).show();
-
-        }else {
-            DhcpInfo dhcpInfo = wifiManager.getDhcpInfo();
-            int i = dhcpInfo.serverAddress;
-            //将获取的int转为真正的ip地址
-            hostIp = (i & 0xFF) + "." + ((i >> 8) & 0xFF) + "." + ((i >> 16) & 0xFF)
-                    + "." + (i >> 24 & 0xFF);
-
-            startClient();
-        }
+//        WifiManager wifiManager=(WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+//        if(!wifiManager.isWifiEnabled())  {
+//            Toast.makeText( this, "请连接服务器WiFi,并重启应用",
+//                    Toast.LENGTH_SHORT).show();
+//
+//        }else {
+//            DhcpInfo dhcpInfo = wifiManager.getDhcpInfo();
+//            int i = dhcpInfo.serverAddress;
+//            //将获取的int转为真正的ip地址
+//            hostIp = (i & 0xFF) + "." + ((i >> 8) & 0xFF) + "." + ((i >> 16) & 0xFF)
+//                    + "." + (i >> 24 & 0xFF);
+//        }
+        startClient();
         sendMessageBtn.setOnClickListener((v)-> {
-            startClient();
-            clientSocket.sendMessage();
+            if(clientSocket != null){
+                clientSocket.sendMessage();
+            }else {
+                Toast.makeText(this,"未连接到服务器",Toast.LENGTH_SHORT);
+            }
         });
-        sendErrorMessageBtn.setOnClickListener((v)-> clientSocket.sendErrorMessage());
+        sendErrorMessageBtn.setOnClickListener((v)-> {
+            if(clientSocket != null){
+                clientSocket.sendErrorMessage();
+            }else {
+                Toast.makeText(this,"未连接到服务器",Toast.LENGTH_SHORT);
+            }
+        });
         sendEnd.setOnClickListener((v -> {
-            clientSocket.senEnd();
-            clientSocket = null ;
+            if(clientSocket!= null){
+                clientSocket.senEnd();
+                clientSocket = null ;
+            }
         }));
         restart.setOnClickListener((v)-> startClient());}
 
@@ -67,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             clientSocket = new ClientSocket(
                     text,
                     getApplicationContext(),
-                    hostIp,
+                    "192.168.43.1",
                     (NotificationManager) getSystemService(NOTIFICATION_SERVICE)
             );
         }
