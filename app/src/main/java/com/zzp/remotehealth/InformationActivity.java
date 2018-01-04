@@ -56,21 +56,25 @@ public class InformationActivity extends AppCompatActivity {
 
         // 绑定viewpager
         tabLayout.setupWithViewPager(viewPager);
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if(patients.size()!= tempSize){
-                    tempSize = patients.size();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            tabAdapter = new TabAdapter(getSupportFragmentManager());
-                        }
-                    });
-                }
+        if(type){
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    if(patients.size()!= tempSize){
+                        tempSize = patients.size();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                tabAdapter = new TabAdapter(getSupportFragmentManager());
+                                tabAdapter.notifyDataSetChanged();
+                            }
+                        });
+                    }
 
-            }
-        },1000,1000);
+                }
+            },1000,1000);
+        }
+
 
     }
 
